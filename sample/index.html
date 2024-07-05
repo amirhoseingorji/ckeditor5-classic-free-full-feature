@@ -1,41 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>CKEditor 5 – classic editor build – development sample</title>
-	<style>
-		body {
-			max-width: 800px;
-			margin: 20px auto;
-		}
-	</style>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8" />
+    <title>CKEditor 5 – classic editor build – development sample</title>
+    <style>
+      body {
+        max-width: 800px;
+        margin: 20px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CKEditor 5 – classic editor build – development sample</h1>
 
-<h1>CKEditor 5 – classic editor build – development sample</h1>
+    <div id="editor">
+      <p>
+        33_ چگونه به والدین کمک می کنید تا خود و فرزندانشان را برای حضور در مرکز
+        آماده کنند ؟
+      </p>
+      <p>&nbsp;</p>
+      <figure class="table">
+        <table>
+          <tbody>
+            <tr>
+              <td>&33;</td>
+              <td>&33;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nb33sp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+          </tbody>
+        </table>
+      </figure>
+    </div>
 
-<div id="editor">
-	<h2>Sample</h2>
+    <script src="../build/ckeditor.js"></script>
+    <script>
+      const full = [
+        "fontFamily",
+        "heading",
+        "fontSize",
+        "|",
+        "fontColor",
+        "fontBackgroundColor",
+        "highlight",
+        "|",
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "|",
+        "bulletedList",
+        "numberedList",
+        "todoList",
+        "|",
+        "outdent",
+        "indent",
+        "alignment",
+        "|",
+        "code",
+        "codeBlock",
+        "|",
+        "superscript",
+        "subscript",
+        "|",
+        "undo",
+        "redo",
+        "blockQuote",
+        "horizontalLine",
+        "pageBreak",
+        "specialCharacters",
+        "|",
+        "link",
+        "imageInsert",
+        "insertTable",
+        "htmlEmbed",
+        "mediaEmbed",
+        "videoUpload",
+        "|",
+        "sourceEditing",
+        "|",
+        "findAndReplace",
+        "|",
+        "removeFormat",
+      ];
+      function uploadAdapter(loader) {
+        return {
+          upload: () => {
+            return new Promise(async (resolve, reject) => {
+              try {
+                console.log("upload");
+                // const file = await loader.file;
 
-	<p>This is an instance of the <a href="https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/predefined-builds.html#classic-editor">classic editor build</a>.</p>
+                // let res = await upload({ file });
+                resolve({
+                  default: `https://azmoon.donap.ir/api/v1/file/${loader.file}`,
+                });
+              } catch (error) {
+                reject("Hello", error);
+              }
+            });
+          },
+          abort: () => {},
+        };
+      }
+      function uploadPlugin(editor) {
+        editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+          return uploadAdapter(loader);
+        };
+      }
+      ClassicEditor.create(document.querySelector("#editor"), {
+        // removePlugins: [
+        //   "Video",
+        //   "VideoUpload",
+        //   "VideoResize",
+        //   "VideoToolbar",
+        //   "VideoStyle",
+        //   "VideoInsert",
+        // ],
+        video: {
+          upload: {
+            types: ["mp4"],
+            allowMultipleFiles: false,
+          },
+          styles: ["alignLeft", "alignCenter", "alignRight"],
 
-	<figure class="image">
-		<img src="../tests/manual/sample.jpg" alt="Autumn fields" />
-	</figure>
+          // Configure the available video resize options.
+          resizeOptions: [
+            {
+              name: "videoResize:original",
+              label: "Original",
+              icon: "original",
+            },
+            {
+              name: "videoResize:50",
+              label: "50",
+              icon: "medium",
+            },
+            {
+              name: "videoResize:75",
+              label: "75",
+              icon: "large",
+            },
+          ],
 
-	<p>You can use this sample to validate whether your <a href="https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/alternative-setups/custom-builds.html">custom build</a> works fine.</p>
-</div>
+          // You need to configure the video toolbar, too, so it shows the new style
+          // buttons as well as the resize buttons.
+          toolbar: [
+            "videoStyle:alignLeft",
+            "videoStyle:alignCenter",
+            "videoStyle:alignRight",
+            "|",
+            "videoResize:50",
+            "videoResize:75",
+            "videoResize:original",
+          ],
+        },
+        toolbar: {
+          items: full,
+          shouldNotGroupWhenFull: true,
+        },
+        // mediaEmbed: {
+        //   previewsInData: true,
+        //   renderForEditingView: true,
+        //   AutoMediaEmbed: true,
+        //   elementName: "video",
+        //   providers: [
+        //     // {
+        //     //   name: "uploadVideo",
+        //     //   url: "/your-upload-video-endpoint",
+        //     //   uploadUrl: "/your-upload-video-url-endpoint",
+        //     //   supports: {
+        //     //     video: true,
+        //     //     audio: true,
+        //     //   },
+        //     //   html: (match) => {
+        //     //     let src = match.input;
+        //     //     return !src.includes(".mp3") && !src.includes(".wav")
+        //     //       ? `<video  width="320" height="240" controls src="${src}" type="video/mp4"></video>`
+        //     //       : `<audio  width="320"  controls src="${src}" type="audio/mp3"></audio>`;
+        //     //   },
+        //     // },
+        //     {
+        //       name: "uploadVideo",
+        //       url: /(?:\w+:)?\/\/[^\/]+([^?#]+)/,
+        //       html: (match) => {
+        //         let src = match.input;
+        //         return !src.includes("mp3")
+        //           ? `<video  width="320" height="240" controls src="${src}" type="video/mp4"></video>`
+        //           : `<audio  width="320"  controls src="${src}" type="audio/mp3"></audio>`;
+        //       },
+        //     },
+        //   ],
+        // },
+        htmlSupport: {
+          allow: [
+            {
+              name: /.*/,
+              attributes: true,
+              classes: true,
+              styles: true,
+            },
+          ],
+        },
+        htmlEmbed: {
+          showPreviews: true,
+        },
+        fullPage: false,
+        resize_enabled: true,
+        //   extraPlugins: [uploadPlugin],
+        fontSize: { options: [9, 11, 13, 16, 18, 20, 24, 30] },
+        removePlugins: ["Markdown", "FindAndReplace", "headings", "MediaEmbed"],
+        language: "fa",
+        heading: {
+          options: [
+            {
+              model: "heading1",
+              view: "h1",
+              title: "تیتر 1",
+              class: "ck-heading_heading1",
+            },
+            {
+              model: "heading2",
+              view: "h2",
+              title: "تیتر 2",
+              class: "ck-heading_heading2",
+            },
+            {
+              model: "paragraph",
+              title: "پاراگراف1",
+              class: "ck-heading_paragraph",
+            },
+          ],
+        },
+        fontFamily: {
+          options: [
+            "ضخامت1,font-1",
+            "ضخامت2,font-2",
+            "ضخامت3,font-3",
+            "ضخامت4,font-4",
+            "ضخامت5,font-5",
+            "ضخامت6,font-6",
+          ],
+          // options: [{ view: "font-1", model: "font-1", title: `test1` }],
+        },
 
-<script src="../build/ckeditor.js"></script>
-<script>
-	ClassicEditor.create( document.querySelector( '#editor' ) )
-		.then( editor => {
-			window.editor = editor;
-		} )
-		.catch( error => {
-			console.error( 'There was a problem initializing the editor.', error );
-		} );
-</script>
-
-</body>
+        image: {},
+        // \\\  plugins: [AutoVideo],
+        // video: {},
+        //   toolbar: [
+        //     "heading",
+        //     "|",
+        //     "bold",
+        //     "italic",
+        //     "link",
+        //     "bulletedList",
+        //     "numberedList",
+        //     "blockQuote",
+        //   ],
+        //   plugins: [Paste],
+        //   plugins: [PasteFromOffice],
+      })
+        .then((editor) => {
+          window.editor = editor;
+        })
+        .catch((error) => {
+          console.error("There was a problem initializing the editor.", error);
+        });
+    </script>
+  </body>
 </html>

@@ -73,10 +73,10 @@ import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline";
 import WordCount from "@ckeditor/ckeditor5-word-count/src/wordcount";
 import Video from "@visao/ckeditor5-video/src/video";
 import VideoUpload from "@visao/ckeditor5-video/src/videoupload";
-import VideoResize from "@visao/ckeditor5-video/src/videoresize";
+// import VideoResize from "@visao/ckeditor5-video/src/videoresize";
 import VideoToolbar from "@visao/ckeditor5-video/src/videotoolbar";
-import VideoStyle from "@visao/ckeditor5-video/src/videostyle";
-import VideoInsert from "@visao/ckeditor5-video/src/videoinsert";
+// import VideoStyle from "@visao/ckeditor5-video/src/videostyle";
+// import VideoInsert from "@visao/ckeditor5-video/src/videoinsert";
 export default class ClassicEditor extends ClassicEditorBase {}
 
 // Plugins to include in the build.
@@ -148,10 +148,10 @@ ClassicEditor.builtinPlugins = [
   WordCount,
   Video,
   VideoUpload,
-  VideoResize,
+  // VideoResize,
   VideoToolbar,
-  VideoStyle,
-  VideoInsert,
+  // VideoStyle,
+  // VideoInsert,
 ];
 
 // Editor configuration.
@@ -193,6 +193,8 @@ ClassicEditor.defaultConfig = {
       "|",
       "link",
       "imageInsert",
+      "videoUpload",
+      // "VideoInsert",
       "insertTable",
       "htmlEmbed",
       "mediaEmbed",
@@ -206,7 +208,6 @@ ClassicEditor.defaultConfig = {
       "undo",
       "redo",
       "|",
-      "videoUpload",
     ],
     shouldNotGroupWhenFull: true,
   },
