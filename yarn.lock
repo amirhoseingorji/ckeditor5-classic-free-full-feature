@@ -783,7 +783,7 @@
 
 "@visao/ckeditor5-video@https://github.com/amirhoseingorji/ckeditor5-video":
   version "42.0.0"
-  resolved "https://github.com/amirhoseingorji/ckeditor5-video#4df16c819d05dcc078113fadce80e94115429726"
+  resolved "https://github.com/amirhoseingorji/ckeditor5-video#5a65102767e3d203bf49c96eb4bc9a72f3e9ad49"
   dependencies:
     "@ckeditor/ckeditor5-ui" "^42.0.0"
     ckeditor5 "^42.0.0"
